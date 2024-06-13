@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -6,8 +6,19 @@ const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [location, setLocation] = useState('');
   const [unit, setUnit] = useState('metric');
-  const [lang, setLang] = useState('en'); // Default language is English
+  const [lang, setLang] = useState('en');
   const [error, setError] = useState(null);
+
+  const fetchWeatherData = useCallback(async (lat, lon) => {
+    try {
+      const apiKey = '0df052fdfc6cf9131637ec5db331bb15';
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${unit}&lang=${lang}&appid=${apiKey}`;
+      const response = await axios.get(apiUrl);
+      setWeatherData(response.data);
+    } catch (error) {
+      setError('Error fetching weather data');
+    }
+  }, [unit, lang]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -19,18 +30,7 @@ const WeatherApp = () => {
         setError('Unable to retrieve your location');
       }
     );
-  }, [fetchWeatherData, ]);
-
-  const fetchWeatherData = async (lat, lon) => {
-    try {
-      const apiKey = '0df052fdfc6cf9131637ec5db331bb15'; // Replace with your actual API key
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${unit}&lang=${lang}&appid=${apiKey}`;
-      const response = await axios.get(apiUrl);
-      setWeatherData(response.data);
-    } catch (error) {
-      setError('Error fetching weather data');
-    }
-  };
+  }, [fetchWeatherData]);
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -39,7 +39,7 @@ const WeatherApp = () => {
   const handleLocationSubmit = async (event) => {
     event.preventDefault();
     try {
-      const apiKey = '0df052fdfc6cf9131637ec5db331bb15'; // Replace with your actual API key
+      const apiKey = '0df052fdfc6cf9131637ec5db331bb15';
       const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=${unit}&lang=${lang}&appid=${apiKey}`;
       const response = await axios.get(apiUrl);
       setWeatherData(response.data);
@@ -74,20 +74,20 @@ const WeatherApp = () => {
 
   const renderWeatherEffect = () => {
     if (!weatherData || !weatherData.weather) return null;
-  
+
     const { weather } = weatherData;
     const isRaining = weather.some((w) => w.main.toLowerCase().includes('rain'));
     const isSunny = weather.some((w) => w.main.toLowerCase().includes('clear'));
-  
+
     if (!isRaining && !isSunny) return null;
-  
+
     const rainDrops = [];
     if (isRaining) {
       for (let i = 0; i < 100; i++) {
         const left = Math.random() * 100;
         const delay = Math.random() * 5;
         const duration = 5 + Math.random() * 5;
-  
+
         rainDrops.push(
           <div
             key={i}
@@ -101,7 +101,7 @@ const WeatherApp = () => {
         );
       }
     }
-  
+
     return (
       <div className="weather-effect">
         {isRaining && <div className="rain-effect">{rainDrops}</div>}
@@ -109,7 +109,7 @@ const WeatherApp = () => {
       </div>
     );
   };
-  
+
   const convertTemperature = (temp) => {
     if (unit === 'metric') {
       return temp;
@@ -120,7 +120,7 @@ const WeatherApp = () => {
 
   return (
     <div className={`weather-app ${getBackgroundClass()}`}>
-       {renderWeatherEffect()}
+      {renderWeatherEffect()}
       <div className="container">
         <h1 className="app-title">Weather Wise</h1>
         <p className="app-description">Wise & Accurate Weather Forecast</p>
@@ -149,7 +149,6 @@ const WeatherApp = () => {
             <option value="en">English</option>
             <option value="fr">French</option>
             <option value="es">Spanish</option>
-            {/* Add more language options as needed */}
           </select>
         </div>
         {error && <p className="error-message">{error}</p>}
