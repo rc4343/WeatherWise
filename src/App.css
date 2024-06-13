@@ -13,19 +13,19 @@
 }
 
 .rainy {
-  background-image: url('rainy-background.jpg');
+  background-image: url('rainy-background-min.jpg');
 }
 
 .sunny {
-  background-image: url('sunny-background.jpg');
+  background-image: url('sunny-background-min.jpg');
 }
 
 .snowy {
-  background-image: url('snowy-background.jpg');
+  background-image: url('snowy-background-min.jpg');
 }
 
 .cloudy {
-  background-image: url('cloudy-background.jpg');
+  background-image: url('cloudy-background-min.jpg');
 }
 
 .container {

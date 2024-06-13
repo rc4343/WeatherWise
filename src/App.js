@@ -94,8 +94,8 @@ const WeatherApp = () => {
             className="rain-drop"
             style={{
               left: `${left}%`,
-              animationDelay: `${delay}s`,
-              animationDuration: `${duration}s`,
+              animationDelay: `${5}s`,
+              animationDuration: `${Infinity}s`,
             }}
           />
         );
