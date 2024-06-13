@@ -19,7 +19,7 @@ const WeatherApp = () => {
         setError('Unable to retrieve your location');
       }
     );
-  }, []);
+  }, [fetchWeatherData, ]);
 
   const fetchWeatherData = async (lat, lon) => {
     try {
