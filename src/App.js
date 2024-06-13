@@ -60,7 +60,7 @@ const WeatherApp = () => {
     if (!weatherData) return '';
     const { weather } = weatherData;
     const condition = weather[0].main.toLowerCase();
-    if (condition.includes('rain')) {
+    if (condition.includes('rain') || condition.includes('thunderstorm')) {
       return 'rainy';
     } else if (condition.includes('clear')) {
       return 'sunny';
