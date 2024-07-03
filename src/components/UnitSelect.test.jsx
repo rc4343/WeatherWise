@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import UnitSelect from './UnitSelect';
 
 const handleUnitChange = jest.fn();
@@ -13,10 +12,11 @@ describe('UnitSelect', () => {
     expect(unitSelect).toBeInTheDocument();
   });
 
-  test('calls handleUnitChange on unit change', () => {
+  test('calls handleUnitChange on unit change', async () => {
     render(<UnitSelect unit="metric" handleUnitChange={handleUnitChange} />);
     const unitSelect = screen.getByLabelText('Units:');
-    userEvent.click(unitSelect);
-    expect(handleUnitChange).toHaveBeenCalled();
+    fireEvent.change(unitSelect, { target: { value: 'imperial' } });
+
+    await waitFor(() => expect(handleUnitChange).toHaveBeenCalled());
   });
 });

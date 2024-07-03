@@ -1,19 +1,38 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
+import '@testing-library/jest-dom';
 import WeatherApp from './App';
 
+// Mock axios
 jest.mock('axios');
+
+// Mock geolocation
+const mockGeolocation = {
+  getCurrentPosition: jest.fn().mockImplementation((success) =>
+    Promise.resolve(
+      success({
+        coords: {
+          latitude: 51.1,
+          longitude: 45.3,
+        },
+      })
+    )
+  ),
+};
+
+global.navigator.geolocation = mockGeolocation;
 
 describe('WeatherApp', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('renders location input', () => {
+  test('renders location input', async () => {
     render(<WeatherApp />);
-    const locationInput = screen.getByPlaceholderText('Enter city or zip code');
-    expect(locationInput).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Enter city or zip code')).toBeInTheDocument();
+    });
   });
 
   test('fetches weather data on location submit', async () => {
@@ -23,7 +42,7 @@ describe('WeatherApp', () => {
       main: { temp: 25, humidity: 50 },
       wind: { speed: 5 },
     };
-    axios.get.mockResolvedValueOnce({ data: mockWeatherData });
+    axios.get.mockResolvedValue({ data: mockWeatherData });
 
     render(<WeatherApp />);
     const locationInput = screen.getByPlaceholderText('Enter city or zip code');
@@ -32,13 +51,12 @@ describe('WeatherApp', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      const locationName = screen.getByText('New York');
-      expect(locationName).toBeInTheDocument();
+      expect(screen.getByText('New York')).toBeInTheDocument();
     });
   });
 
   test('handles error when fetching weather data', async () => {
-    axios.get.mockRejectedValueOnce(new Error('Network error'));
+    axios.get.mockRejectedValue(new Error('Network error'));
 
     render(<WeatherApp />);
     const locationInput = screen.getByPlaceholderText('Enter city or zip code');
@@ -47,8 +65,7 @@ describe('WeatherApp', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      const errorMessage = screen.getByText('Error fetching weather data');
-      expect(errorMessage).toBeInTheDocument();
+      expect(screen.getByText('Error fetching weather data')).toBeInTheDocument();
     });
   });
 

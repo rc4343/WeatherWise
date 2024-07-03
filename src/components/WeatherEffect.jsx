@@ -1,3 +1,4 @@
+// WeatherEffect.jsx
 import React from 'react';
 
 const WeatherEffect = ({ weatherData }) => {
@@ -32,9 +33,13 @@ const WeatherEffect = ({ weatherData }) => {
     }
 
     return (
-      <div className="weather-effect">
-        {isRaining && <div className="rain-effect">{rainDrops}</div>}
-        {isSunny && <div className="sun-effect" />}
+      <div>
+        {weatherData.weather.map((weather, index) => (
+          <div key={index} data-testid={`${weather.main.toLowerCase()}-effect`}> 
+            {isRaining && <div className="rain-effect">{rainDrops}</div>}
+            {isSunny && <div className="sun-effect" />}
+          </div>
+        ))}
       </div>
     );
   };

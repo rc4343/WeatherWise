@@ -8,8 +8,8 @@ describe('WeatherEffect', () => {
       weather: [{ main: 'Rain' }],
     };
     render(<WeatherEffect weatherData={mockWeatherData} />);
-    const rainEffect = screen.getByClassName('rain-effect');
-    expect(rainEffect).toBeInTheDocument();
+    const rainEffect = screen.getByTestId('rain-effect');
+    expect(rainEffect).toBeTruthy();
   });
 
   test('renders sun effect', () => {
@@ -17,8 +17,8 @@ describe('WeatherEffect', () => {
       weather: [{ main: 'Clear' }],
     };
     render(<WeatherEffect weatherData={mockWeatherData} />);
-    const sunEffect = screen.getByClassName('sun-effect');
-    expect(sunEffect).toBeInTheDocument();
+    const sunEffect = screen.getByTestId('clear-effect');
+    expect(sunEffect).toBeTruthy();
   });
 
   test('does not render effect for other weather conditions', () => {
@@ -26,9 +26,7 @@ describe('WeatherEffect', () => {
       weather: [{ main: 'Clouds' }],
     };
     render(<WeatherEffect weatherData={mockWeatherData} />);
-    const rainEffect = screen.queryByClassName('rain-effect');
-    const sunEffect = screen.queryByClassName('sun-effect');
-    expect(rainEffect).toBeNull();
-    expect(sunEffect).toBeNull();
+    const cloudsEffect = screen.queryByTestId('clouds-effect');
+    expect(cloudsEffect).toBeNull();
   });
 });

@@ -37,6 +37,7 @@ describe('LocationForm', () => {
     const locationInput = screen.getByPlaceholderText('Enter city or zip code');
     fireEvent.change(locationInput, { target: { value: 'New York' } });
     expect(handleLocationChange).toHaveBeenCalledTimes(1);
+    expect(handleLocationChange).toHaveBeenCalledWith(expect.any(Object)); // Adjust this line if necessary
   });
 
   test('calls handleLocationSubmit on form submit', () => {
@@ -48,8 +49,8 @@ describe('LocationForm', () => {
         getBackgroundClass={getBackgroundClass}
       />
     );
-    const submitButton = screen.getByRole('button', { name: 'Get Weather' });
-    fireEvent.click(submitButton);
+    const form = screen.getByTestId('location-form');
+    fireEvent.submit(form);
     expect(handleLocationSubmit).toHaveBeenCalledTimes(1);
   });
 });
