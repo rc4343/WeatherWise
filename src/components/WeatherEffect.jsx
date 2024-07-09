@@ -1,50 +1,48 @@
-// WeatherEffect.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useWeatherContext } from '../context/WeatherContext';
 
-const WeatherEffect = ({ weatherData }) => {
-  const renderWeatherEffect = () => {
-    if (!weatherData || !weatherData.weather) return null;
+const WeatherEffect = () => {
+  const { weatherData } = useWeatherContext();
+  const [raindrops, setRaindrops] = useState([]);
 
-    const { weather } = weatherData;
-    const isRaining = weather.some((w) => w.main.toLowerCase().includes('rain'));
-    const isSunny = weather.some((w) => w.main.toLowerCase().includes('clear'));
-
-    if (!isRaining && !isSunny) return null;
-
-    const rainDrops = [];
-    if (isRaining) {
-      for (let i = 0; i < 100; i++) {
-        const left = Math.random() * 100;
-        const delay = Math.random() * 5;
-        const duration = 5 + Math.random() * 5;
-
-        rainDrops.push(
-          <div
-            key={i}
-            className="rain-drop"
-            style={{
-              left: `${left}%`,
-              animationDelay: `${delay}s`,
-              animationDuration: `${duration}s`,
-            }}
-          />
-        );
+  useEffect(() => {
+    if (weatherData && weatherData.weather) {
+      const condition = weatherData.weather[0].main.toLowerCase();
+      if (condition.includes('rain') || condition.includes('drizzle')) {
+        const newRaindrops = Array.from({ length: 100 }, (_, i) => ({
+          id: i,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          animationDuration: `${0.5 + Math.random() * 0.5}s`,
+          animationDelay: `${Math.random() * 2}s`
+        }));
+        setRaindrops(newRaindrops);
+      } else {
+        setRaindrops([]);
       }
     }
+  }, [weatherData]);
 
-    return (
-      <div>
-        {weatherData.weather.map((weather, index) => (
-          <div key={index} data-testid={`${weather.main.toLowerCase()}-effect`}> 
-            {isRaining && <div className="rain-effect">{rainDrops}</div>}
-            {isSunny && <div className="sun-effect" />}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  if (!weatherData || !weatherData.weather) {
+    return null;
+  }
 
-  return renderWeatherEffect();
+  return (
+    <div className="weather-effect">
+      {raindrops.map((drop) => (
+        <div
+          key={drop.id}
+          className="raindrop"
+          style={{
+            left: drop.left,
+            top: drop.top,
+            animationDuration: drop.animationDuration,
+            animationDelay: drop.animationDelay
+          }}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default WeatherEffect;

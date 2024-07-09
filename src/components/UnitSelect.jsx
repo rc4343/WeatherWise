@@ -1,9 +1,17 @@
+// src/components/UnitSelect.jsx
 import React from 'react';
+import { useWeatherContext } from '../context/WeatherContext';
 
-const UnitSelect = ({ unit, handleUnitChange }) => {
+const UnitSelect = () => {
+  const { unit, setUnit } = useWeatherContext();
+
+  const handleUnitChange = (e) => {
+    setUnit(e.target.value);
+  };
+
   return (
-    <div>
-      <label htmlFor="unit-select">Units:</label>
+    <div className="unit-select-container">
+      <label htmlFor="unit-select">Temperature Unit:</label>
       <select id="unit-select" value={unit} onChange={handleUnitChange}>
         <option value="metric">Celsius</option>
         <option value="imperial">Fahrenheit</option>
