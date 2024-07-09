@@ -58,12 +58,47 @@ body {
 
 .location-button {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
   border: none;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
   font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.location-button {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.location-button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.rainy .location-button {
+  background-color: #607d8b; /* Grey color for rainy weather */
+}
+
+.sunny .location-button {
+  background-color: #ffa000; /* Sunny color for sunny weather */
+}
+
+.cloudy .location-button {
+  background-color: #03a9f4; /* Blue color for cloudy weather */
+}
+
+/* Hover effects for different weather conditions */
+.rainy .location-button:hover {
+  background-color: #455a64;
+}
+
+.sunny .location-button:hover {
+  background-color: #ff8f00;
+}
+
+.cloudy .location-button:hover {
+  background-color: #0288d1;
 }
 
 .unit-select-container,
