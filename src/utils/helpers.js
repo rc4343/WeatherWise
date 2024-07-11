@@ -14,11 +14,3 @@ export const getBackgroundClass = (weatherData) => {
     return { backgroundClass: '', buttonClass: '' };
   };
   
-  export const convertTemperature = (temp, unit) => {
-    if (unit === 'metric') {
-      return temp;
-    } else {
-      return (temp * 9/5) + 32;
-    }
-  };
-  

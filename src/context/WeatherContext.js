@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useCallback, useContext } from 'react';
 import useWeather from '../hooks/useWeather';
 
 const WeatherContext = createContext();

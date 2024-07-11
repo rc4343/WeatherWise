@@ -17,7 +17,7 @@ const WeatherInfo = () => {
     return unit === 'metric' ? `${speed.toFixed(1)} m/s` : `${(speed * 2.237).toFixed(1)} mph`;
   };
 
-  return (
+  const renderedOutput = (
     <div className="weather-info-container">
       <h2 className="location-name">{weatherData.name}</h2>
       <div className="weather-info-grid">
@@ -51,6 +51,8 @@ const WeatherInfo = () => {
       </div>
     </div>
   );
+
+  return renderedOutput;
 };
 
 export default WeatherInfo;

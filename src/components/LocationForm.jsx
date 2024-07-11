@@ -13,8 +13,9 @@ const LocationForm = () => {
         value={location}
         onChange={(e) => setLocation(e.target.value)}
         className="location-input"
+        data-testid="location-input"
       />
-      <button type="submit" className="location-button">
+      <button type="submit" className="location-button" data-testid="submit-button">
         Get Weather
       </button>
     </form>

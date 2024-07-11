@@ -8,7 +8,7 @@ const WeatherEffect = () => {
   useEffect(() => {
     if (weatherData && weatherData.weather) {
       const condition = weatherData.weather[0].main.toLowerCase();
-      if (condition.includes('rain') || condition.includes('drizzle')) {
+      if (condition.includes('rain') || condition.includes('drizzle') || condition.includes('thunderstrom')) {
         const newRaindrops = Array.from({ length: 100 }, (_, i) => ({
           id: i,
           left: `${Math.random() * 100}%`,
